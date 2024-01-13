@@ -1,0 +1,211 @@
+<%- include ('../layouts/userheader.ejs')%>
+
+
+<body>
+<!-- Start Header Area -->
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+<!-- End Header Area -->
+ <!-- Start Banner Area -->
+ <section class="banner-area organic-breadcrumb">
+	<div class="container">
+		 <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			  <div class="col-first">
+					<h1>Shopping Cart</h1>
+					<nav class="d-flex align-items-center">
+						 <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						 <a href="category.html">Cart</a>
+					</nav>
+			  </div>
+		 </div>
+	</div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Cart Area =================-->
+<section class="cart_area">
+  <div class="container" id="reloadDiv">
+    <% if (cart && cart.length > 0) { %>
+      <div class="cart_inner">
+        <div class="table-responsive">
+          <table class="table responsive">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% cart.forEach((data) => { %>
+                <tr>
+                  <td>
+                    <div class="media">
+                      <div class="d-flex">
+                        <img src="images/products/<%= data.productId.coverPic[0] %>" alt="" width="100px">
+                      </div>
+                      <div class="media-body">
+                        <p><%= data.productId.productName %></p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <% if (data.productId.offer|| data.productId.categoryOffer) { %>
+                      <% if (data.productId.offer) { %>
+                        <h5><del> ₹<%=data.productId.price %></del></h5>
+                        <h5>₹<%= data.productId.discountedPrice %></h5>
+                        <% }else{%>
+                          <h5><del> ₹<%=data.productId.price %></del></h5>
+                          <h5>₹<%= data.productId.categoryDiscountedPrice %></h5>
+                        <% }%>
+                      <% }else{%>
+                    <h5>$<%=data.productId.price %></h5>
+                    <% }%>
+                  </td>
+                  <td>
+                    <div class="product_count">
+                      <a class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" onclick="cartCount('<%=data.productId._id%>','<%=userId%>',-1)">
+                        <i class="lnr lnr-chevron-down"></i>
+                      </a>
+                      <span class="mtext-104 cl3 txt-center num-product p-2" id="<%=data.productId._id%>"><%=data.quantity%></span>
+                      <a class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" onclick="cartCount('<%=data.productId._id%>','<%=userId%>', 1)">
+                        <i class="lnr lnr-chevron-up"></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <h5 class="total-col">₹<%=data.totalPrice%></h5>
+                  </td>
+                  <td class="remove-col">
+                    <button class="btn primary-btn" onclick="removeProduct('<%=data.productId._id%>')">Remove <i class="fa fa-trash"></i></button>
+                  </td>
+                </tr>
+              <% }); %>
+              <tr class="summary-subtotal">
+                <td></td>
+                <td></td>
+                <td>
+                  <h4>Subtotal</h4>
+                </td>
+                <td>
+                  <h4>₹<%= total %></h4>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="checkout_btn_inner text-center">
+            <a class="primary-btn" href="/checkout">Proceed to checkout</a>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="error-content text-center">
+        <dotlottie-player class="mx-auto d-block" src="https://lottie.host/5476084d-d6d5-4baf-b5a2-876d2628363b/8rll48Mwdf.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+        <h1 class="error-title">Nothing in Cart Yet!</h1>
+        <p>Add Products to Cart</p>
+        <a href="/shop"><button class="btn primary-btn">Continue Shopping</button></a>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<!--================End Cart Area =================-->
+
+<!-- start footer Area -->
+<%- include ('../layouts/userContentFooter.ejs')%>
+
+<script>
+	function cartCount(productId, userId, count) {
+		const quantityElement = document.getElementById(productId);
+    const quantity = parseInt(quantityElement.innerHTML);
+    count = parseInt(count);
+
+    if (count === -1 && quantity === 1) {
+        // Disable the "minus" button if the quantity is 1
+        return;
+    }
+    $.ajax({
+        url: '/cart-quantity',
+        type: 'POST',
+        data: { 
+			product: productId,
+            user: userId,
+            count: count,
+            quantity: quantity
+			}
+		}).done(data => {
+        if (data) {
+            const newQuantity = quantity + count;
+            quantityElement.innerText = newQuantity;
+
+            // Enable the "minus" button if the quantity is greater than 0
+            const minusButton = quantityElement.previousElementSibling;
+            if (newQuantity <= 0) {
+                minusButton.style.pointerEvents = 'none';
+                minusButton.style.opacity = 0.5;
+            } else {
+                minusButton.style.pointerEvents = 'auto';
+                minusButton.style.opacity = 1;
+            }
+
+				$('#reloadDiv').load('/cart #reloadDiv');
+        }else if(data.check){
+            swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Out of stock",
+          });
+        } 
+        
+        else {
+            swal.fire({
+            position: "center",
+            icon: "warning",
+            text: response.message,
+            timer: 1500,
+            showConfirmButton: false,
+        });
+        }
+    });
+}
+      //   success: function(data) {
+      //       // Reload the cart section
+      //       $('#reloadDiv').load('/cart #reloadDiv');
+      //   },
+      //   error: function(error) {
+      //       console.log('Error:', error);
+      //   }
+    
+function removeProduct(productId) {
+    $.ajax({
+      url: '/remove-product',
+      method: 'post',
+      // encoded:true,
+      data: {
+        product: productId
+      }
+    }).done(data => {
+      if (data) {
+        $('#reloadDiv').load('/cart #reloadDiv')
+        Swal.fire({
+         
+          icon: 'success',
+          title: 'Item Removed Successfully',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      } else {
+        // res.json({action:failed})
+        console.log('Item removal failed')
+      }
+    })
+  }
+
+	
+ </script>
+ <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<%- include ('../layouts/userfooter.ejs')%>

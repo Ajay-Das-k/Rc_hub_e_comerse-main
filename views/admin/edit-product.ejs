@@ -1,0 +1,405 @@
+<%- include("../layouts/adminheader.ejs") %>
+
+<style>
+ .image-preview-container {
+    display: flex;
+    gap: 10px; /* Adjust as needed */
+    flex-wrap: wrap;
+  }
+
+  .image-preview {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 200px; /* Set maximum width as needed */
+    height: auto; /* Adjust as needed */
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+
+ .button-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+    display: flex;
+    justify-content: space-between;
+    padding: 3px; /* Adjust padding as needed */
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+ .remove-button,
+  .change-button {
+    flex: 1;
+    margin: 1;
+    padding: 6px;
+
+  }
+  .image-preview:hover .button-container {
+    opacity: 1;
+  }
+  
+ 
+</style>
+
+
+
+
+<body>
+   <div class="container-scroller d-flex">
+     <!-- partial:./partials/_sidebar.html -->
+     <%- include("../layouts/adminSideBar.ejs") %>
+     <!-- partial -->
+     <div class="container-fluid page-body-wrapper">
+       <!-- partial:./partials/_navbar.html -->
+       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+             <span class="mdi mdi-menu"></span>
+           </button>
+           <div class="navbar-brand-wrapper p-4">
+             <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.png" alt="logo"/></a> -->
+           </div>
+           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Edit Product <%= product.productName %></h4>
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item  p-2">
+              
+              <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item  p-2">
+                  <h4 class="mb-0 font-weight-bold d-none d-xl-block  text-uppercase" id="clock" style="color: #fcfcfc;"></h4>
+                </li>
+        
+              </ul>
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+              </button>
+            </div>
+
+            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+              
+         
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item nav-profile dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                
+                 <span class="nav-profile-name">Admin</span>
+               </a>
+               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                
+                 <a class="dropdown-item" href="/admin/logout">
+                   <i class="mdi mdi-logout text-primary"></i>
+                   Logout
+                 </a>
+               </div>
+             </li>
+      
+           </ul>
+         </div>
+       </nav>
+       <!-- partial -->
+       <div class="main-panel">
+         <div class="content-wrapper">
+           
+            <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Edit Product <%= product.productName %>    </h4>
+                <img class="rounded-circle" src="/images/products/<%= product.coverPic[0]%>" alt="" style="width: 60px; height: 60px;">  
+                <p class="card-description"></p>
+<form class="forms-sample" action="" method="post" enctype="multipart/form-data" id="productForm">
+  <div class="form-group">
+    <label class="form-label">ProductName</label>
+    <input type="text" class="form-control" name="productName" value="<%= product.productName %>" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Description</label>
+    <input type="text" class="form-control" name="description" value="<%= product.description %>" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Category</label>
+    <select class="form-control" id="category" name="category" required>
+      <% category.forEach(category => { %>
+      <option value="<%= category._id %>"><%= category.categoryName %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Color</label>
+    <input type="text" class="form-control" name="color" value="<%= product.color %>" required>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Price</label>
+    <input type="number" class="form-control" name="price" id="price" value="<%= product.price %>" required>
+    <div id="priceError" class="error-message text-danger"></div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Brand</label>
+    <select class="form-control" id="category" name="brand" required>
+      <% brand.forEach(brand => { %>
+      <option value="<%= brand._id %>"><%= brand.brandName %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Quantity</label>
+    <input type="number" class="form-control" name="quantity" id="quantity" value="<%= product.quantity %>" required>
+    <div id="quantityError" class="error-message text-danger"></div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Status</label>
+    <br>
+    <label>Active</label>
+    <input type="radio" name="is_block" value="1" <% if(product.is_block == 1){ %> checked <% } %>>
+    <label>Block</label>
+    <input type="radio" name="is_block" value="0" <% if(product.is_block == 0){ %> checked <% } %>>
+  </div>
+  <input type="hidden" name="id" value="<%= product._id %>">
+  <button type="submit" class="btn btn-primary mr-2" id="updateProductBtn" disabled>Update Product</button>
+</form>
+
+
+
+             
+              </div>
+            </div>
+          </div>
+             <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+
+                  <h4 class="card-title">Edit Product images  </h4>
+
+
+           <% if (product.coverPic) { %>
+  <div class="image-preview-container">
+    <% for (let i = 0; i < product.coverPic.length; i++) { %>
+      <div class="image-preview" id="container<%= i %>">
+        <img src="/images/products/<%= product.coverPic[i] %>" alt="Old Image">
+        <div class="button-container">
+          <button class="btn btn-danger remove-button m-2" data-productid="<%= product._id %>" data-imageindex="<%= i %>">Remove</button>
+          
+        </div>
+      </div>
+    <% } %>
+    <% if(product.coverPic.length<10){%>
+    <div class="image-preview" id="containerAdd">
+        <img src="https://cdn-icons-png.flaticon.com/512/4211/4211547.png" alt="Old Image">
+    <div class="button-container">
+  <button class="btn btn-danger Add-button m-2" data-productid="<%= product._id %>" id="addPicture">Add Pictures</button>
+  <input type="file" name="coverPic" class="d-none image-input" accept="image/*" id="imageInput" multiple>
+</div>
+      </div>
+      <%}%>
+  </div>
+<% } %>
+
+
+
+
+
+
+
+                </div>
+                </div>
+                </div>
+           </div>
+           
+         
+         
+         <!-- partial -->
+       </div>
+       <!-- main-panel ends -->
+     </div>
+     <!-- page-body-wrapper ends -->
+   </div>
+   <!-- container-scroller -->
+   
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script>
+  $(document).ready(function () {
+    // Enable submit button only if there are no errors
+    function enableSubmitButton() {
+      var hasErrors = $('.error-message:visible').length > 0;
+      $('#updateProductBtn').prop('disabled', hasErrors);
+    }
+
+    // Validation for Price
+    $('#price').on('blur', function () {
+      var price = $(this).val();
+      var errorMessage = '';
+
+      if (price < 10) {
+        errorMessage = 'Price must be at least 10.';
+      }
+
+      $('#priceError').text(errorMessage).toggle(errorMessage !== '');
+      enableSubmitButton();
+    });
+
+    // Validation for Quantity
+    $('#quantity').on('blur', function () {
+      var quantity = $(this).val();
+      var errorMessage = '';
+
+      if (quantity < 10) {
+        errorMessage = 'Quantity must be at least 10.';
+      }
+
+      $('#quantityError').text(errorMessage).toggle(errorMessage !== '');
+      enableSubmitButton();
+    });
+
+    // Hide error messages after 5 seconds
+    setTimeout(function () {
+      $('.error-message').fadeOut();
+    }, 5000);
+  });
+</script>
+
+
+
+<!-- block the product -->
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var blockRadios = document.querySelectorAll('input[name="is_block"]');
+        for (var i = 0; i < blockRadios.length; i++) {
+            blockRadios[i].addEventListener('change', function() {
+                if (this.value == 0) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You are blocking the product!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, block it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // This is where you can submit the form to block the product
+                            document.querySelector('form').submit();
+                        }
+                    });
+                }
+            });
+        }
+    });
+   </script>
+   <!-- remove the product -->
+   <script>
+  document.addEventListener('DOMContentLoaded', function () {
+  const removeButtons = document.querySelectorAll('.remove-button');
+
+  removeButtons.forEach(button => {
+    button.addEventListener('click', function (event) {
+      // Stop the event from propagating up to parent elements
+      event.stopPropagation();
+
+      const productId = this.getAttribute('data-productid');
+      const imageIndex = this.getAttribute('data-imageindex');
+
+      // Fetch code
+      fetch(`/admin/removeImage?productId=${productId}&imageIndex=${imageIndex}`, {
+        method: 'DELETE',
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Use SweetAlert for the alert
+        Swal.fire({
+          title: 'Success!',
+          text: data.message,
+          icon: 'success',
+        });
+
+        // Remove the corresponding image-preview div by ID
+        const imagePreviewDivId = `container${imageIndex}`;
+        const imagePreviewDiv = document.getElementById(imagePreviewDivId);
+        if (imagePreviewDiv) {
+          imagePreviewDiv.remove();
+        }
+      })
+      .catch(error => {
+        console.error('Error during fetch:', error);
+        // Handle errors here if necessary
+      });
+    });
+  });
+});
+
+</script>
+<!-- image upload -->
+<script>
+ document.addEventListener('DOMContentLoaded', function () {
+  const addPicturesButton = document.getElementById('addPicture');
+  const imageInput = document.getElementById('imageInput');
+
+  addPicturesButton.addEventListener('click', function () {
+    const productId = addPicturesButton.getAttribute('data-productid');
+
+    // Clear any previously selected files
+    imageInput.value = null;
+
+    // Trigger the file input click event
+    imageInput.click();
+  });
+
+  // Listen for changes in the file input
+  imageInput.addEventListener('change', function () {
+    const productId = addPicturesButton.getAttribute('data-productid');
+    const formData = new FormData();
+
+    formData.append('coverPic', imageInput.files[0]); // Assuming you want to upload the first selected file
+
+    fetch(`/admin/uploadImage/${productId}`, {
+      method: 'PATCH',
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Handle the response from the server as needed
+
+        // Check if the upload was successful
+        if (data.success) {
+          // Display a SweetAlert
+          Swal.fire({
+            title: 'Success!',
+            text: data.message,
+            icon: 'success',
+          });
+
+          // Reload the page after a short delay (adjust the delay as needed)
+          setTimeout(() => {
+            window.location.reload();
+            // Optionally, scroll down after refreshing
+            window.scrollTo(0, document.body.scrollHeight);
+          }, 3000); // 1000 milliseconds = 1 second
+        } else {
+          // Handle other cases as needed
+        }
+      })
+      .catch(error => {
+        console.error('Error during fetch:', error);
+        // Handle errors here if necessary
+      });
+  });
+});
+
+</script>
+
+<%- include("../layouts/adminfooter.ejs") %>

@@ -1,0 +1,228 @@
+<%- include("../layouts/userheader.ejs") %>
+
+
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Login/Register</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="category.html">Login/Register</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section_gap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" src="/user/img/register.jpg" alt="">
+						<div class="hover">
+							<h4>Already A User ?</h4>
+							<p>Resume the journey where you stopped</p>
+							<a class="primary-btn" href="/">Login</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Register to RC HUB</h3>
+						<form class="row login_form" action="" method="post" enctype="multipart/form-data" id="contactForm" >
+							<% if (typeof emailMessage !== 'undefined') { %>
+								<p class="text-center text-danger email-message"><%= emailMessage %></p>
+							 <% } %>
+							
+							<div class="col-md-12 form-group">
+								 <input type="text" class="form-control" name="name" placeholder="Username" onblur="validateName()" required>
+								 <div id="nameError" class="error-message text-danger"></div>
+							</div>
+							<div class="col-md-12 form-group">
+								 <input type="email" class="form-control" name="email" placeholder="Email" onblur="validateEmail()" required>
+								 <div id="emailError" class="error-message text-danger"></div>
+							</div>
+							<div class="col-md-12 form-group">
+								 <input type="tel" class="form-control" name="mno" placeholder="Mobile Number" onblur="validateMobile()" >
+								 <div id="mnoError" class="error-message text-danger"></div>
+							</div>
+							<div class="col-md-12 form-group">
+								 <input type="file" class="form-control"  name="image" required>
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" name="password" placeholder="Password" 
+								onblur="validatePassword()" 
+								required>
+								<div id="passwordError" class="error-message text-danger"></div>
+						  </div>
+						  <div class="col-md-12 form-group">
+							<input type="password" class="form-control" name="verify_password" placeholder="Verify Password" onblur="validatePasswordConfirmation(); checkFormValidity()" required>
+							<div id="passwordMatchError" class="error-message text-danger"></div>
+						  </div>
+						  <div class="col-md-12 form-group">
+							
+							<button type="submit" class="primary-btn" id="submitButton" disabled>Sign Up</button>
+
+							<br>
+							<br>
+							<div class="col-md-12 form-group">
+								
+								 
+								 <% if (typeof message !== 'undefined') { %>
+									<p class="text-center text-danger general-message"><%= message %><span class="text-danger"><a href="https://mail.google.com/mail/" target="_blank">Goto Gmail !</a></span><br><br></p>
+								 <% } %>
+								 <!-- <button type="submit" class="primary-btn">Log In</button> -->
+								 <!-- <div class="col-md-12 form-group">
+									<button type="submit" class="primary-btn" id="submitButton" disabled>Log In</button>
+							  </div> -->
+								 <a href="/forget">Forgot Password?</a>
+								 <a href="/verification">not verified?</a>
+							</div>
+					  </form>
+					  
+					</div>
+				</div>
+			</div>
+		</div>
+		<h9>P@ssw0rd</h9>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<!-- start footer Area -->
+	<%- include ('../layouts/userContentFooter.ejs')%>
+	<!-- End footer Area -->
+	<script>
+
+		  // Function to handle email message
+		  function handleEmailMessage() {
+    const emailMessageElement = document.querySelector('.email-message');
+    if (emailMessageElement) {
+      setTimeout(function () {
+        emailMessageElement.textContent = '';
+      }, 3000); // Hide email message after 3 seconds
+    }
+  }
+
+  // Function to handle general message
+  function handleMessage() {
+    const messageElement = document.querySelector('.general-message');
+    if (messageElement) {
+      setTimeout(function () {
+        messageElement.textContent = '';
+      }, 3000); // Hide general message after 3 seconds
+    }
+  }
+
+  // Call functions when the document is ready
+  document.addEventListener('DOMContentLoaded', function () {
+    handleEmailMessage();
+    handleMessage();
+  });
+
+
+		function validateName() {
+			const name = document.querySelector('[name="name"]').value.trim();
+			const nameRegex = /^[A-Za-z][A-Za-z\s]*$/;
+			const nameError = document.getElementById('nameError');
+			nameError.textContent = '';
+	
+			if (!nameRegex.test(name)) {
+				nameError.textContent = "Name must start with a letter and can include letters and spaces but not at the beginning.";
+				setTimeout(function () {
+					nameError.textContent = '';
+				}, 3000); // Hide error message after 3 seconds
+			}
+		}
+	
+		function validateEmail() {
+			const email = document.querySelector('[name="email"]').value;
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			const emailError = document.getElementById('emailError');
+			emailError.textContent = '';
+			if (!emailRegex.test(email)) {
+				emailError.textContent = "Please enter a valid email address.";
+				setTimeout(function () {
+					emailError.textContent = '';
+				}, 3000); // Hide error message after 3 seconds
+			}
+		}
+	
+		function validateMobile() {
+			const mno = document.querySelector('[name="mno"]').value;
+			const mnoRegex = /^\d{10}$/;
+			const mnoError = document.getElementById('mnoError');
+			mnoError.textContent = '';
+	
+			// Check for repetition of four consecutive numbers
+			const consecutiveNumbersRegex = /(\d)\1\1\1/;
+	
+			if (!mnoRegex.test(mno) || consecutiveNumbersRegex.test(mno)) {
+				mnoError.textContent = "Mobile number must be exactly 10 digits and should not include repetition of four consecutive numbers.";
+				setTimeout(function () {
+					mnoError.textContent = '';
+				}, 3000); // Hide error message after 3 seconds
+			}
+		}
+	
+		function validatePassword() {
+			const password = document.querySelector('[name="password"]').value;
+			const passwordError = document.getElementById('passwordError');
+			passwordError.textContent = '';
+	
+			// Regular expression for a strong password
+			const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+	
+			if (!passwordRegex.test(password)) {
+				passwordError.textContent = "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character (@ $ ! % * ? &).";
+				setTimeout(function () {
+					passwordError.textContent = '';
+				}, 3000); // Hide error message after 3 seconds
+			}
+		}
+	
+		function validatePasswordConfirmation() {
+			const password = document.querySelector('[name="password"]').value;
+			const verifyPassword = document.querySelector('[name="verify_password"]').value;
+			const passwordMatchError = document.getElementById('passwordMatchError');
+			passwordMatchError.textContent = '';
+	
+			if (password !== verifyPassword) {
+				passwordMatchError.textContent = "Passwords do not match.";
+				setTimeout(function () {
+					passwordMatchError.textContent = '';
+				}, 3000); // Hide error message after 3 seconds
+			}
+		}
+	
+		function checkFormValidity() {
+			const nameError = document.getElementById('nameError').textContent;
+			const emailError = document.getElementById('emailError').textContent;
+			const mnoError = document.getElementById('mnoError').textContent;
+			const passwordError = document.getElementById('passwordError').textContent;
+			const passwordMatchError = document.getElementById('passwordMatchError').textContent;
+	
+			const submitButton = document.getElementById('submitButton');
+			const formIsValid = !(nameError || emailError || mnoError || passwordError || passwordMatchError);
+	
+			if (formIsValid) {
+				submitButton.removeAttribute('disabled');
+				submitButton.classList.add('enabled');
+			} else {
+				submitButton.setAttribute('disabled', 'true');
+				submitButton.classList.remove('enabled');
+			}
+		}
+	</script>
+	
+  
+
+<%- include('../layouts/userfooter.ejs') %>

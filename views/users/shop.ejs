@@ -1,0 +1,529 @@
+<%- include ('../layouts/userheader.ejs')%>
+
+
+
+<body id="category">
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Shop</h1>
+					<nav class="d-flex align-items-center">
+						<a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+						
+						<a href="/Shop">Shop</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-categories">
+					<div class="head">Browse Categories</div>
+					<ul class="main-categories">
+						
+						<li class="main-nav-list"><a data-toggle="collapse" href="#categoryList" aria-expanded="false" aria-controls="categoryList"><span
+								 class="lnr lnr-arrow-right"></span>Categories<span class="number">(<%=categoryList.length %>)</span></a>
+							<ul>
+
+								 <%catData.forEach((cat)=>{%>
+									<li class="main-nav-list child">
+											<% if(category==cat._id) { %>
+                    <a href="?category=<%=cat._id%>&sortValue=<%=sortValue%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>"
+                        style="color:rgb(242, 142, 3);">
+                        <%=cat.categoryName %>
+                    </a>
+                    <% } else { %>
+                    <a href="?category=<%=cat._id%>&sortValue=<%=sortValue%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>"
+                        style="color: #636363;">
+                        <%=cat.categoryName %>
+                    </a>
+                    <% } %>
+									</li>         
+									<% })%>
+								
+							</ul>
+						</li>
+						</ul>
+						<ul class="main-categories">
+						<li class="main-nav-list"><a data-toggle="collapse" href="#brandList" aria-expanded="false" aria-controls="brandList"><span
+								 class="lnr lnr-arrow-right"></span>Brands<span class="number">(<%=brandList.length %>)</span></a>
+							<ul>
+
+								 <%brandData.forEach((brand)=>{%>
+									<li class="main-nav-list child">
+											<% if(brand==brand._id) { %>
+                    <a href="?brand=<%=brand._id%>&sortValue=<%=sortValue%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>"
+                        style="color:rgb(242, 142, 3);">
+                        <%=brand.brandName %>
+                    </a>
+                    <% } else { %>
+                    <a href="?brand=<%=brand._id%>&sortValue=<%=sortValue%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>"
+                        style="color: #636363;">
+                        <%=brand.brandName %>
+                    </a>
+                    <% } %>
+									</li>         
+									<% })%>
+								
+							</ul>
+						</li>
+	
+					</ul>
+				</div>
+				<div class="sidebar-filter mt-50">
+					<div class="top-filter-head">Product Filters</div>
+					<div class="common-filter">
+						<div class="head">Price</div>
+						
+							<ul>
+								
+									<li class="filter-list">
+										<% if(maxPrice==3999){ %>
+                    <p><a href="?minPrice=0&maxPrice=3999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f4e240;">₹0 - ₹3999</a></p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=0&maxPrice=3999&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹0 - ₹3999</a></p>
+                    <% } %>
+                    <% if(maxPrice==8999){ %>
+                    <p><a href="?minPrice=100&maxPrice=500&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f4e240;">₹100 - ₹500</a>
+                    </p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=100&maxPrice=500&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹100 - ₹500</a>
+                    </p>
+                    <% } %>
+                    <% if(maxPrice==13999){ %>
+                    <p><a href="?minPrice=500&maxPrice=1000&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f4e240;">₹500 - ₹1000</a></p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=500&maxPrice=1000&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹500 - ₹1000</a></p>
+                    <% } %>
+                    <% if(maxPrice==18999){ %>
+                    <p><a href="?minPrice=1000&maxPrice=1500&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f4e240;">₹1000 - ₹1500</a></p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=1000&maxPrice=1500&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹1000 - ₹1500</a></p>
+                    <% } %>
+                    <% if(minPrice==19000){ %>
+                    <p><a href="?minPrice=1500&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color:#f4e240;">₹1500+</a>
+                    </p>
+                    <% }else{ %>
+                    <p><a href="?minPrice=1500&sortValue=<%=sortValue%>&category=<%=category%>&brand=<%=brand%>&search=<%=search%>"
+                            style="color: #636363;">₹1500+</a>
+                    </p>
+                    <% } %>
+									</li>       
+									
+							</ul>
+						
+					</div>
+					<div class="common-filter">
+						<div class="head">Sort</div>
+						
+							<ul>
+								<li class="filter-list">
+								
+									<% if(sortValue&&sortValue==3) {%>
+                <a href="?sortValue=3&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                    style="color:#f4b240;">
+                    Latest
+                </a>
+                <%}else{%>
+                    <a href="?sortValue=3&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                        style="color: #636363;">
+                        Latest
+                    </a>
+
+                <%}%>
+					 </li>
+					 <li class="filter-list">
+                <% if(sortValue&&sortValue==2) {%>
+                <a href="?sortValue=2&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                    Price Low to High
+                </a>
+                <%}else{%>
+                    <a href="?sortValue=2&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                        style="color: #636363;">
+                        Price Low to High
+                    </a>
+						  </li>
+
+               <% }%>
+					<li class="filter-list">
+               <% if(sortValue&&sortValue==1) {%>
+                <a href="?sortValue=1&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                    Price High to Low
+                </a>
+            <%}else{%>
+                <a href="?sortValue=1&category=<%=category%>&brand=<%=brand%>&minPrice=<%=minPrice%>&maxPrice=<%=maxPrice%>&search=<%=search%>" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                    style="color: #636363;">
+                    Price High to Low
+                </a>
+           <% }%>     
+								</li>	
+							</ul>
+						
+					</div>
+					<!-- <div class="common-filter">
+						<div class="head">Color</div>
+						<form action="#">
+							<ul>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label for="black">Black<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather" name="color"><label for="balckleather">Black
+										Leather<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="blackred" name="color"><label for="blackred">Black
+										with red<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="gold" name="color"><label for="gold">Gold<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
+							</ul>
+						</form>
+					</div> -->
+					<!-- <div class="common-filter">
+						<div class="head">Price</div>
+						<div class="price-range-area">
+							<div id="price-range"></div>
+							<div class="value-wrapper d-flex">
+								<div class="price">Price:</div>
+								<span>₹</span>
+								<div id="lower-value"></div>
+								<div class="to">to</div>
+								<span>₹</span>
+								<div id="upper-value"></div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+			<div class="col-xl-9 col-lg-8 col-md-7">
+				<!-- Start Filter Bar -->
+				
+				<!-- End Filter Bar -->
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+						<!-- single product -->
+						<% for(let i=0;i<product.length;i++){ %>
+							<div class="col-lg-3 col-md-6">
+                        <div class="single-product">
+									  <% if (product[i].offer || product[i].category.offer) { %>
+  <% if (product[i].offer && (!product[i].category.offer || product[i].offer.percentage > product[i].category.offer.percentage)) { %>
+    <div class="ribbon ribbon-top-right" style="z-index: 1;"><span><%= product[i].offer.percentage %>% OFF!</span></div>
+  <% } else if (product[i].category.offer) { %>
+    <div class="ribbon ribbon-top-right" style="z-index: 1;"><span><%= product[i].category.offer.percentage %>% OFF!</span></div>
+  <% } %>
+<% } %>
+                            <img class="img-fluid" src="/images/products/<%= product[i].coverPic[0] %>" alt="">
+                            <div class="product-details">
+										<h7><%= product[i].brand.brandName %></h7>
+                                <h6><%= product[i].productName %></h6>                                    
+                                    <div class="price">
+                    <% if (product[i].offer && (!product[i].category.offer || product[i].offer.percentage > product[i].category.offer.percentage)) { %>
+                        <h6 class="l-through">₹<%= product[i].price %></h6>
+                      <h6>₹<%= product[i].discountedPrice %></h6>
+                    <% } else if (product[i].category.offer) { %>  
+                        <h6 class="l-through">₹<%= product[i].price %></h6>
+                      <h6>₹<%= product[i].categoryDiscountedPrice %></h6>  
+                    <% } else { %>
+                      <h6>₹<%= product[i].price %></h6>
+                    <% } %>
+                  </div>
+  
+                                <div class="prd-bottom">
+											<%if(typeof user !== 'undefined') {%>
+                                    <a onclick="addToCart('<%= product[i].id %>')" class="add-cart social-info">
+                                        <span class="ti-bag"></span>
+                                        <p class="hover-text">add to Cart</p>
+                                    </a>
+												
+                                    <a  class="social-info" id="wishlist-button">
+                                        <span class="lnr lnr-heart"></span>
+                                        <p class="hover-text">Wishlist</p>
+                                    </a>
+												<%}%>
+                                    <a href="/singleProduct/<%= product[i].id %>" class="social-info">
+                                        <span class="lnr lnr-move"></span>
+                                        <!-- <p class="hover-text">view more</p> -->
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                
+						
+						<!-- single product -->
+						
+						<!-- single product -->
+						
+							
+						<!-- single product -->
+						
+				</section>
+				<!-- End Best Seller -->
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<!-- <div class="sorting mr-auto">
+						<select>
+							<option value="1">Show 12</option>
+							<option value="1">Show 12</option>
+							<option value="1">Show 12</option>
+						</select>
+					</div> -->
+					<ul class="pagination justify-content-end">
+                <% for (let i=1; i <=pageCount; i++) { %>
+                    <li class="page-item <%= locals.currentPage == i ? 'active' : '' %>">
+                        <a class="page-link bg-dark <%= locals.currentPage == i ? 'text-white' : 'text-secondary' %>"
+                            href="/shop?page=<%= i %>&sortValue=<%= sortValue %>&category=<%= category %>&brand=<%= brand %>&minPrice=<%= minPrice %>&maxPrice=<%= maxPrice %>&search=<%= search %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+            </ul>
+				  
+				  
+				</div>
+				<!-- End Filter Bar -->
+			</div>
+		</div>
+	</div>
+
+	<!-- Start related-product Area -->
+	<section class="related-product-area section_gap">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 text-center">
+					<div class="section-title">
+						<h1>Deals of the Week</h1>
+						<p>grab the new deals</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r1.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r2.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r3.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r5.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r6.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r7.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r9.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r10.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="single-related-product d-flex">
+								<a href="#"><img src="img/r11.jpg" alt=""></a>
+								<div class="desc">
+									<a href="#" class="title">Black lace Heels</a>
+									<div class="price">
+										<h6>₹189.00</h6>
+										<h6 class="l-through">₹210.00</h6>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="ctg-right">
+						<a href="#" target="_blank">
+							<img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End related-product Area -->
+<!-- start footer Area -->
+<%- include ('../layouts/userContentFooter.ejs')%>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        
+        const wishlistButtons = document.querySelectorAll('#wishlist-button');
+    
+        
+        wishlistButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+    
+                
+                button.classList.add('red-wishlist-button');
+    
+                
+                Swal.fire({
+                    title: 'Item added to your wishlist!',
+                    icon: 'success',
+                });
+            });
+        });
+
+
+        const cartButtons = document.querySelectorAll('#cart-button');
+    
+        
+       
+
+        function addToCart(id) {
+  console.log("addToCart function called with id: " + id);
+  $.ajax({
+    url: "/addTocart",
+    method: "post",
+    encoded: true,
+    data: {
+      id: id
+    },
+  }).done((data) => {
+    if (data) {
+      console.log(data);
+
+      Swal.fire({
+ 
+  icon: 'success',
+  title: 'Item has been added to Cart!',
+  showConfirmButton: false,
+  timer: 1000
+})
+    } else {
+      swal("Fail to add");
+    }
+  });
+}
+
+
+
+
+
+$(document).ready(function () {
+        // Listen for input changes in the search bar
+        $('#searchInput').on('input', function () {
+            const searchText = $(this).val().toLowerCase();
+
+            // Loop through each row in the table and hide/show based on search text
+            $('#user-table tbody tr').each(function () {
+                const row = $(this);
+
+                // Check if any cell in the row contains the search text
+                const found = row.find('td').toArray().some(function (cell) {
+                    const cellText = $(cell).text().toLowerCase();
+                    return cellText.includes(searchText);
+                });
+
+                // Show or hide the row accordingly
+                if (found) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        });
+    });
+
+
+    </script>
+
+    
+<%- include ('../layouts/userfooter.ejs')%>

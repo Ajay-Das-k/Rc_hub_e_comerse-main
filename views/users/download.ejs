@@ -1,0 +1,50 @@
+<%- include ('../layouts/userheader.ejs')%>
+
+
+
+<body >
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+ <section class="banner-area organic-breadcrumb">
+	<div class="container">
+		 <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			  <div class="col-first">
+					<h1>Order confirmation</h1>
+					<nav class="d-flex align-items-center">
+						 <a href="/home">Home
+                     <span class="lnr lnr-arrow-right"></span></a>
+						 <a href="/cart">Cart
+                     <span class="lnr lnr-arrow-right"></span></a>
+						 <a href="/checkOut">Check Out
+                     <span class="lnr lnr-arrow-right"></span></a>
+						 <a href="/cart">Order confirm</a>
+					</nav>
+			  </div>
+		 </div>
+	</div>
+</section>
+
+<section class="p-4">
+   <div class="container">
+      
+         
+             <div class="row">
+               
+              
+                 <div class="col-md-12 text-center pt-5">
+                   <span class="d-flex justify-content-center  ">
+                     <dotlottie-player src="https://lottie.host/acb1c3c9-cea1-4ee8-ae8a-478d260689c6/wM19xUPgEb.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+                   </span>
+                   <h3 class=" text-black">Invoice Generated Sucessfully</h3>
+                   <p class="lead mb-5">Download your invoice Below</p>
+                       <a href="<%= path %>"><button class="btn primary-btn">Download</button>  </a>
+                     </div> 
+   </div>
+   
+</section>
+
+
+<%- include ('../layouts/userContentFooter.ejs')%>
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+<%- include ('../layouts/userfooter.ejs')%>

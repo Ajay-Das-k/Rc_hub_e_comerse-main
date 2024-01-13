@@ -1,0 +1,141 @@
+<%- include("../layouts/adminheader.ejs") %>
+
+
+
+
+<body>
+   <div class="container-scroller d-flex">
+     <!-- partial:./partials/_sidebar.html -->
+     <%- include("../layouts/adminSideBar.ejs") %>
+     <!-- partial -->
+     <div class="container-fluid page-body-wrapper">
+       <!-- partial:./partials/_navbar.html -->
+       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+             <span class="mdi mdi-menu"></span>
+           </button>
+           <div class="navbar-brand-wrapper p-4">
+             <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.png" alt="logo"/></a> -->
+           </div>
+           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Edit brand <%= brand.brandName %></h4>
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item  p-2">
+              
+              <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item  p-2">
+                  <h4 class="mb-0 font-weight-bold d-none d-xl-block  text-uppercase" id="clock" style="color: #fcfcfc;"></h4>
+                </li>
+        
+              </ul>
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+              </button>
+            </div>
+
+            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+              
+         
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item nav-profile dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                
+                 <span class="nav-profile-name">Admin</span>
+               </a>
+               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                
+                 <a class="dropdown-item" href="/admin/logout">
+                   <i class="mdi mdi-logout text-primary"></i>
+                   Logout
+                 </a>
+               </div>
+             </li>
+      
+           </ul>
+         </div>
+       </nav>
+       <!-- partial -->
+       <div class="main-panel">
+         <div class="content-wrapper">
+           
+            <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Edit brand <%= brand.brandName %>    </h4>
+                <img class="rounded-circle" src="/images/brand/<%=brand.coverPic%>" alt="" style="width: 60px; height: 60px;">
+                
+                    
+                
+                <p class="card-description">
+                
+                </p>
+                <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label class="form-label">brandName</label>
+                    <input type="text" class="form-control" name="brandName" value="<%= brand.brandName %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">specification</label>
+                    <input type="text" class="form-control" name="specification" value="<%= brand.specification %>" required>
+                  </div>
+                    <div class="form-group">
+                    <label for="coverPic" class="form-label">Cover Pic</label>
+                    <input class="form-control" type="file" id="coverPic" name="coverPic">
+                </div>
+                  <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <br>
+                    <label>Active</label>
+                    <input type="radio" name="is_block" value="1" <% if(brand.is_block == 1){ %> checked <% } %>>
+                    <label>Block</label>
+                    <input type="radio" name="is_block" value="0" <% if(brand.is_block == 0){ %> checked <% } %>>
+                  </div> 
+                  <input type="hidden" name="id" value="<%= brand._id %>">
+                  <button type="submit" class="btn btn-primary mr-2">Update brand</button>
+                </form>
+                
+                
+              </div>
+            </div>
+          </div>
+             
+           </div>
+           
+         
+         
+         <!-- partial -->
+       </div>
+       <!-- main-panel ends -->
+     </div>
+     <!-- page-body-wrapper ends -->
+   </div>
+   <!-- container-scroller -->
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function validateBrandName() {
+        const brandName = document.querySelector('[name="brandName"]').value.trim();
+        const brandNameError = document.getElementById('brandNameError');
+        brandNameError.textContent = '';
+  
+        if (brandName.length < 3) {
+          brandNameError.textContent = "Brand name must be at least 3 characters long.";
+        }
+      }
+  
+      function validateSpecification() {
+        const specification = document.querySelector('[name="specification"]').value.trim();
+        const specificationError = document.getElementById('specificationError');
+        specificationError.textContent = '';
+  
+        if (specification.length < 3) {
+          specificationError.textContent = "Specification must be at least 3 characters long.";
+        }
+      }
+  
+      document.querySelector('[name="brandName"]').addEventListener('blur', validateBrandName);
+      document.querySelector('[name="specification"]').addEventListener('blur', validateSpecification);
+    });
+  </script>
+<%- include("../layouts/adminfooter.ejs") %>

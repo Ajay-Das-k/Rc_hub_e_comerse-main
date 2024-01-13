@@ -1,0 +1,75 @@
+<%- include ('../layouts/userheader.ejs')%>
+
+
+
+<body >
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+ <section class="banner-area organic-breadcrumb">
+	<div class="container">
+		 <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			  <div class="col-first">
+					<h1>Orders</h1>
+					<nav class="d-flex align-items-center">
+						 <a href="/home">Home
+                     <span class="lnr lnr-arrow-right"></span></a>
+						 <a href="/orders">Orders</a>
+					</nav>
+			  </div>
+		 </div>
+	</div>
+</section>
+
+<section class="p-4">
+  <div class="container">
+
+    <div class="row justify-content-center">
+    <% if (orders.length > 0) { %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Order Date</th>
+                    <th>Amount</th>
+                    <th>Payment</th>
+                    <th>Expected Delivery</th>
+                    <th>Tracking Number</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < orders.length; i++) { %>
+                    <tr>
+                        <td><%= i + 1 %></td>
+                        <td><%= orders[i].date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
+                        <td>₹ <%= orders[i].totalAmount %></td>
+                        <td> <%= orders[i].paymentMethod %></td>
+                        <td><%= orders[i].expectedDelivery.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %></td>
+                        <td><%= orders[i].uniqueId %></td>
+                        <td>
+                            <a href="/orderDetails?id=<%= orders[i]._id %>"><button class="btn primary-btn btn-sm">View Details</button></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="error-content text-center">
+            <dotlottie-player src="https://lottie.host/5476084d-d6d5-4baf-b5a2-876d2628363b/8rll48Mwdf.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+            <h1 class="error-title">No Orders Yet!</h1>
+            <p>You Ordered Nothing.</p>
+            <a href="/shop"><button class="btn primary-btn">Continue Shopping</button></a>
+        </div>
+    <% } %>
+</div>
+
+
+  </div>
+</section>
+
+
+
+<%- include ('../layouts/userContentFooter.ejs')%>
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+<%- include ('../layouts/userfooter.ejs')%>

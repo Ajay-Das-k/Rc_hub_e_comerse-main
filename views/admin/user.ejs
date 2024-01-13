@@ -1,0 +1,187 @@
+<%- include("../layouts/adminheader.ejs") %>
+
+
+
+
+<body>
+   <div class="container-scroller d-flex">
+     <!-- partial:./partials/_sidebar.html -->
+     <%- include("../layouts/adminSideBar.ejs") %>
+     <!-- partial -->
+     <div class="container-fluid page-body-wrapper">
+       <!-- partial:./partials/_navbar.html -->
+       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+             <span class="mdi mdi-menu"></span>
+           </button>
+           <div class="navbar-brand-wrapper p-4">
+             <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.png" alt="logo"/></a> -->
+           </div>
+           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">User Dashboard</h4>
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item  p-2">
+              
+              <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item  p-2">
+                  <h4 class="mb-0 font-weight-bold d-none d-xl-block  text-uppercase" id="clock" style="color: #fcfcfc;"></h4>
+                </li>
+        
+              </ul>
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+              </button>
+            </div>
+
+            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+              <ul class="navbar-nav mr-lg-2">
+                <li class="nav-item nav-search d-none d-lg-block">
+                 
+                    <form class="input-group">
+                    <input type="text" class="form-control"  name="search" placeholder="Search User name, email, mobile" aria-label="search" aria-describedby="search">
+                    <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                      <i class="mdi mdi-account-search-outline text-success"></i>                          
+                    </button>
+                   
+                    </form>
+                  
+                  
+                </li>
+              </ul>
+         
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item nav-profile dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                
+                 <span class="nav-profile-name">Admin</span>
+               </a>
+               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                
+                 <a class="dropdown-item" href="/admin/logout">
+                   <i class="mdi mdi-logout text-primary"></i>
+                   Logout
+                 </a>
+               </div>
+             </li>
+      
+           </ul>
+         </div>
+       </nav>
+       <!-- partial -->
+       <div class="main-panel">
+         <div class="content-wrapper">
+           
+             <div class="col-12 col-xl-6 grid-margin stretch-card">
+                <a href="/admin/new-user">
+                    <button class="btn btn-outline-dark btn-icon-text">
+                        <i class="mdi mdi-account-multiple-plus btn-icon-prepend mdi-36px"></i>
+                        <span class="d-inline-block text-left">
+                        <small class="font-weight-light d-block">create new user</small>
+                        Add User
+                        </span>
+                    </button>
+                    <button class="btn btn-outline-dark btn-icon-text">
+                      <i class="mdi mdi-account-multiple btn-icon-prepend mdi-36px"></i>
+                      <span class="d-inline-block text-left">
+                      <small class="font-weight-light d-block">Users number </small>
+                      <%=userCount%>
+                      </span>
+                  </button>
+            </a>
+               
+             </div>
+             <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Users information</h4>
+                  <p class="card-description">
+                    Users are <code> listed here</code>
+                  </p>
+                  <div class="table-responsive pt-3">
+                    <table class="table table-bordered" id="user-table">
+                      <thead>
+                        <tr class="text-primary">
+                          <th scope="col">Name</th>
+                          <th scope="col">@Email</th>
+                          <th scope="col">Mobile</th>
+                          <th scope="col">Dp</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">UserControll</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% 
+                        if(users.length > 0){
+                          for(let i=0;i<users.length;i++){
+                        %>
+                        <tr>
+                          <td><%= users[i].name %></td>
+                          <td><%= users[i].email %></td>
+                          <td><%= users[i].mobile %></td>
+                          <td> 
+                            <div class="position-relative">
+                              <img class="rounded-circle" src="/images/userProfile/<%= users[i].image %>" alt="<%= users[i].image %>" style="width: 100px; height: 100px;">
+                            </div>
+                          </td>
+                          <td>
+                            <%if(users[i].is_varified == 0){%>
+                              <p>Not Verified <i class="mdi mdi-thumb-down" style="color: rgb(255, 3, 3);"></i></p>
+                              <%} else{ %>
+                              <p>Verified <i class="mdi mdi-thumb-up" style="color: rgb(106, 255, 0);"></i></p> 
+                              <%} %>
+                          </td>
+                          <td>
+                            <%if(users[i].is_block == 0){ %>
+                              <p>Blocked <i class="mdi mdi-account-off" style="color: rgb(255, 3, 3);"></i></p>
+                              <%} else{ %>
+                              <p>Active <i class="mdi mdi-account-convert" style="color: rgb(106, 255, 0);"></i></p> 
+                              <% }%>
+                          </td>
+                          <td>
+                            <a class="btn btn-outline-warning btn-sm btn-fw" href="/admin/edit-user?id=<%= users[i]._id %>">Edit</a>
+                            <a class="btn btn-outline-danger btn-sm btn-fw" href="/admin/delete-user?id=<%= users[i]._id %>">Delete</a>
+                          </td>
+                        </tr>
+                        <%}}else{ %>
+                        <tr>
+                          <td colspan="7">Users Not Found</td>
+                        </tr>
+                        <%}%>
+                      </tbody>
+                    </table>
+                    
+                    <!-- ------------Adding Pagination -------------- -->
+
+  <div class="pagination-container ">
+    <br>
+    <%
+    for(let j=1; j <= totalPages; j++){
+      %>
+      <a href="?page=<%= j %>"><button type="button" class="btn btn-primary"><%= j%></button></a>
+      <%
+    } 
+    %>
+    
+  </div>
+
+  <!-- ------------------------------------------------------- -->
+                  </div>
+                </div>
+              </div>
+            </div>
+           </div>
+           
+         
+         
+         <!-- partial -->
+       </div>
+       <!-- main-panel ends -->
+     </div>
+     <!-- page-body-wrapper ends -->
+   </div>
+   <!-- container-scroller -->
+
+
+<%- include("../layouts/adminfooter.ejs") %>

@@ -1,0 +1,116 @@
+<%- include("../layouts/adminheader.ejs") %>
+
+
+
+
+<body>
+   <div class="container-scroller d-flex">
+     <!-- partial:./partials/_sidebar.html -->
+     <%- include("../layouts/adminSideBar.ejs") %>
+     <!-- partial -->
+     <div class="container-fluid page-body-wrapper">
+       <!-- partial:./partials/_navbar.html -->
+       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+             <span class="mdi mdi-menu"></span>
+           </button>
+           <div class="navbar-brand-wrapper p-4">
+             <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.png" alt="logo"/></a> -->
+           </div>
+           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Edit category <%= category.categoryName %></h4>
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item  p-2">
+              
+              <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item  p-2">
+                  <h4 class="mb-0 font-weight-bold d-none d-xl-block  text-uppercase" id="clock" style="color: #fcfcfc;"></h4>
+                </li>
+        
+              </ul>
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+              </button>
+            </div>
+
+            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+              
+         
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item nav-profile dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                
+                 <span class="nav-profile-name">Admin</span>
+               </a>
+               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                
+                 <a class="dropdown-item" href="/admin/logout">
+                   <i class="mdi mdi-logout text-primary"></i>
+                   Logout
+                 </a>
+               </div>
+             </li>
+      
+           </ul>
+         </div>
+       </nav>
+       <!-- partial -->
+       <div class="main-panel">
+         <div class="content-wrapper">
+           
+            <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Edit Category <%= category.categoryName %>    </h4>
+                <img class="rounded-circle" src="images/category/<%=category.coverPic%>" alt="" style="width: 60px; height: 60px;">
+                
+                    
+                
+                <p class="card-description">
+                
+                </p>
+                <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label class="form-label">categoryName</label>
+                    <input type="text" class="form-control" name="categoryName" value="<%= category.categoryName %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">specification</label>
+                    <input type="text" class="form-control" name="specification" value="<%= category.specification %>" required>
+                  </div>
+                    <div class="form-group">
+                    <label for="coverPic" class="form-label">Cover Pic</label>
+                    <input class="form-control" type="file" id="coverPic" name="coverPic">
+                </div>
+                  <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <br>
+                    <label>Active</label>
+                    <input type="radio" name="is_block" value="1" <% if(category.is_block == 1){ %> checked <% } %>>
+                    <label>Block</label>
+                    <input type="radio" name="is_block" value="0" <% if(category.is_block == 0){ %> checked <% } %>>
+                  </div> 
+                  <input type="hidden" name="id" value="<%= category._id %>">
+                  <button type="submit" class="btn btn-primary mr-2">Update category</button>
+                </form>
+                
+                
+              </div>
+            </div>
+          </div>
+             
+           </div>
+           
+         
+         
+         <!-- partial -->
+       </div>
+       <!-- main-panel ends -->
+     </div>
+     <!-- page-body-wrapper ends -->
+   </div>
+   <!-- container-scroller -->
+
+
+<%- include("../layouts/adminfooter.ejs") %>

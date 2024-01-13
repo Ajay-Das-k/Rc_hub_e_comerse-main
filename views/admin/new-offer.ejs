@@ -1,0 +1,254 @@
+<%- include("../layouts/adminheader.ejs") %>
+
+
+
+
+<body>
+   <div class="container-scroller d-flex">
+     <!-- partial:./partials/_sidebar.html -->
+     <%- include("../layouts/adminSideBar.ejs") %>
+     <!-- partial -->
+     <div class="container-fluid page-body-wrapper">
+       <!-- partial:./partials/_navbar.html -->
+       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+             <span class="mdi mdi-menu"></span>
+           </button>
+           <div class="navbar-brand-wrapper p-4">
+             <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.png" alt="logo"/></a> -->
+           </div>
+           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Add New offer</h4>
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item  p-2">
+              
+              <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item  p-2">
+                  <h4 class="mb-0 font-weight-bold d-none d-xl-block  text-uppercase" id="clock" style="color: #fcfcfc;"></h4>
+                </li>
+        
+              </ul>
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+              </button>
+            </div>
+
+            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+              
+         
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item nav-profile dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                
+                 <span class="nav-profile-name">Admin</span>
+               </a>
+               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                
+                 <a class="dropdown-item" href="/admin/logout">
+                   <i class="mdi mdi-logout text-primary"></i>
+                   Logout
+                 </a>
+               </div>
+             </li>
+      
+           </ul>
+         </div>
+       </nav>
+       <!-- partial -->
+       <div class="main-panel">
+         <div class="content-wrapper">
+           
+            <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Add new offer</h4>
+                <p class="card-description">
+                
+                </p>
+
+
+
+<form class="forms-sample" action="/admin/new-offer" method="post">
+  <% if (typeof message !== 'undefined') { %>
+    <p class="text-center text-danger general-message display-3"><%= message %><span class="text-danger"><br></p>
+  <% } %>
+
+  <div class="form-group">
+    <label for="offerName" class="form-label">Offer Title</label>
+    <input type="text" class="form-control" value="offer title 1" id="name" placeholder="Enter Offer Name" name="name" required>
+    <div id="offerNameError" class="error-message text-danger"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="offerName2" class="form-label">Discount %</label>
+    <input type="number" class="form-control" id="discount" value="offer title2" placeholder="Enter Discount" name="percentage" required>
+    <div id="discountErr" class="error-message text-danger"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="startingDate" class="form-label">Select Starting Date and Time</label>
+    <input type="datetime-local" id="startingDate" class="form-control" name="startingDate" required>
+    <div id="startingDateErr" class="error-message text-danger"></div>
+  </div>
+
+  <div class="form-group">
+    <label for="expiryDate" class="form-label">Select Expiry Date and Time</label>
+    <input type="datetime-local" id="expiryDate" class="form-control" name="expiryDate" required>
+    <div id="expiryDateErr" class="error-message text-danger"></div>
+  </div>
+
+  <button type="submit" class="btn btn-primary mr-2">Add offer</button>
+</form>
+
+              
+                
+              </div>
+            </div>
+          </div>
+             
+           </div>
+           
+         
+         
+         <!-- partial -->
+       </div>
+       <!-- main-panel ends -->
+     </div>
+     <!-- page-body-wrapper ends -->
+   </div>
+   <!-- container-scroller -->
+  
+  
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ <script>
+ $(document).ready(function () {
+  // Function to validate offer name on blur
+  $('#name').on('blur', function () {
+    var name = $(this).val().trim();
+    $('.error').text('');
+    if (!name || name.length < 3) {
+      $('#offerNameError').text('Please enter a valid Offer Name with at least 3 characters.');
+      setTimeout(function () {
+        $('#offerNameError').text('');
+      }, 5000); // Hide after 5 seconds
+    }
+  });
+
+  // Function to validate discount on blur
+  $('#discount').on('blur', function () {
+    var discount = $(this).val();
+    $('.error').text('');
+    if (!discount) {
+      $('#discountErr').text('Please enter Discount.');
+      setTimeout(function () {
+        $('#discountErr').text('');
+      }, 5000); // Hide after 5 seconds
+    } else if (discount <= 0 || discount > 90) {
+      $('#discountErr').text('Discount should be greater than zero and less than or equal to 90.');
+      setTimeout(function () {
+        $('#discountErr').text('');
+      }, 5000); // Hide after 5 seconds
+    }
+  });
+
+  // Function to validate starting date on blur
+  $('#startingDate').on('blur', function () {
+    var startingDate = $(this).val();
+    $('.error').text('');
+    if (!startingDate) {
+      $('#startingDateErr').text('Please select Starting Date and Time.');
+      setTimeout(function () {
+        $('#startingDateErr').text('');
+      }, 5000); // Hide after 5 seconds
+    }
+  });
+
+  // Function to validate expiry date on blur
+  $('#expiryDate').on('blur', function () {
+    var expiryDate = $(this).val();
+    $('.error').text('');
+    if (!expiryDate) {
+      $('#expiryDateErr').text('Please select Expiry Date and Time.');
+      setTimeout(function () {
+        $('#expiryDateErr').text('');
+      }, 5000); // Hide after 5 seconds
+    }
+  });
+
+  // Function to submit the form on button click
+  $('form').submit(function (e) {
+    e.preventDefault(); // Prevent the form from submitting by default
+
+    // Validate each field
+    var name = $('#name').val().trim(); // Trim leading and trailing spaces
+    var discount = $('#discount').val();
+    var startingDate = $('#startingDate').val();
+    var expiryDate = $('#expiryDate').val();
+
+    // Reset error messages
+    $('.error').text('');
+
+    // Check if fields are not empty
+    if (!name || name.length < 3) {
+      $('#offerNameError').text('Please enter a valid Offer Name with at least 3 characters.');
+      setTimeout(function () {
+        $('#offerNameError').text('');
+      }, 3000); // Hide after 5 seconds
+    }
+
+    if (!discount) {
+      $('#discountErr').text('Please enter Discount.');
+      setTimeout(function () {
+        $('#discountErr').text('');
+      }, 3000); // Hide after 5 seconds
+    } else if (discount <= 0 || discount > 90) {
+      $('#discountErr').text('Discount should be greater than zero and less than or equal to 90.');
+      setTimeout(function () {
+        $('#discountErr').text('');
+      }, 3000); // Hide after 5 seconds
+    }
+
+    if (!startingDate) {
+      $('#startingDateErr').text('Please select Starting Date and Time.');
+      setTimeout(function () {
+        $('#startingDateErr').text('');
+      }, 3000); // Hide after 5 seconds
+    }
+
+    if (!expiryDate) {
+      $('#expiryDateErr').text('Please select Expiry Date and Time.');
+      setTimeout(function () {
+        $('#expiryDateErr').text('');
+      }, 3000); // Hide after 5 seconds
+    }
+
+    // Check if startingDate is after expiryDate
+    if (new Date(startingDate) > new Date(expiryDate)) {
+      $('#expiryDateErr').text('Start date and time must be before expiry date and time.');
+      setTimeout(function () {
+        $('#expiryDateErr').text('');
+      }, 5000); // Hide after 5 seconds
+      return;
+    }
+
+    // Check if the minimum difference is 2 hours
+    var minDifference = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+    if (new Date(expiryDate) - new Date(startingDate) < minDifference) {
+      $('#expiryDateErr').text('The minimum difference between start and end time should be 2 hours.');
+      setTimeout(function () {
+        $('#expiryDateErr').text('');
+      }, 5000); // Hide after 5 seconds
+      return;
+    }
+
+    // If all fields are filled and date validation is successful, submit the form
+    if (name && discount && startingDate && expiryDate) {
+      this.submit();
+    }
+  });
+});
+</script>
+
+
+<%- include("../layouts/adminfooter.ejs") %>

@@ -1,0 +1,146 @@
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+               
+               
+                <a class="navbar-brand logo_h" href="#"><img src="/user/img/logo.png" alt=""></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item"><a href="/home" a class="nav-link" >Home</a></li>
+
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                             aria-expanded="false">Categories</a>
+                             <ul class="dropdown-menu">
+                                <% if (category && category.length > 0) { %>
+                                    <% for (let i = 0; i < category.length; i++) { %>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/shop?category=<%= category[i]._id%>&sortValue=&minPrice=&maxPrice=&search="><%= category[i].categoryName %></a>
+                                        </li>
+                                    <% } %>
+                                <% } else { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">No categories available</a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                            
+                        </li>
+
+
+                        <li class="nav-item "><a class="nav-link" href="/shop" >shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                        
+
+
+
+
+
+                        <%if(typeof user !== 'undefined') {%>
+                        <li class="nav-item submenu dropdown">
+                            <a href="/cart" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Cart <span class="ti-bag"></span>
+                                <% if (cart && cart.products) { %>
+                                    <span class="badge badge-danger m-2 p-1"><%= cart.products.length %></span>
+                                <% } else { %>
+                                    <span class="badge badge-danger m-2 p-1">0</span>
+                                <% } %>
+                            </a>
+                        
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="nav-item active"><a class="btn btn-sm w-100" href="/cart">View Cart</a></li>
+                                <% if (cart && cart.products) { %>
+                                    <% for (let i = 0; i < cart.products.length; i++) { %>
+                                        <li class="nav-item p-2 border-bottom">
+                                            <div class="d-flex align-items-center">
+                                                <% if (cart.products[i] && cart.products[i].productId) { %>
+                                                    <img class="rounded-circle" src="/images/products/<%= cart.products[i].productId.coverPic[0] %>" alt="" style="width: 49px; height: 60px;">
+                                                    <div class="ml-3">
+                                                        <span class="d-block"><%= cart.products[i].productId.productName %></span>
+                                                        <span class="text-primary"><%= cart.products[i].quantity %> in cart</span>
+                                                    </div>
+                                                    <!-- 
+                                                        Add your button or other elements here. 
+                                                        Note: Uncomment the button code properly.
+                                                    -->
+                                                    <!-- <button type="button" class="btn btn-link btn-sm text-danger ml-auto" onclick="removeProduct('<%= cart.products[i].productId %>')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button> -->
+                                                <% } else { %>
+                                                    <span class="d-block">Invalid product information</span>
+                                                <% } %>
+                                            </div>
+                                        </li>
+                                    <% } %>
+                                <% } %>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                             aria-expanded="false">wish List  <span class="ti-heart"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="nav-link" href="#">Item1</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#">Item2</a></li>
+                                <li class="nav-item active"><a class="nav-link" href="/Wishlist">Goto Wishlist</a></li>
+                                
+                            </ul>
+                        </li>
+
+                        <%}%>
+
+                        <li class="nav-item submenu dropdown">
+
+                            <%if(typeof user !== 'undefined') {%>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">User &nbsp;<img class="rounded-circle" src="/images/userProfile/<%=user.image%>" alt="" style="width: 30px; height: 30px;">
+                            </a>
+                            <%}else{%>
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">Guest&nbsp;<img class="rounded-circle" src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Image.png" alt="" style="width: 30px; height: 30px;">
+                            </a>
+
+                            <%}%>
+                                
+                            
+                            <ul class="dropdown-menu">
+                                <%if(typeof user !== 'undefined') {%>
+                                <li class="nav-item" ><a class="nav-link" href="/logout">Logout</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/edit?id=<%=user._id%>">Profile</a></li>
+                                <!-- <li class="nav-item"><a class="nav-link" href="/coupon">Coupon</a></li> -->
+                                <li class="nav-item"><a class="nav-link" href="/orders">Orders</a></li>
+                                <%}else{%>
+                                <li class="nav-item" ><a class="nav-link" href="/login">Login</a></li>
+                                <li class="nav-item" ><a class="nav-link" href="/register">Register</a></li>
+                                <%}%>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="search_input" id="search_input_box">
+        <div class="container">
+            <form class="d-flex justify-content-between">
+                <input type="text" class="form-control" id="search_input" placeholder="Search Here">
+                <button type="submit" class="btn"></button>
+                <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+            </form>
+        </div>
+    </div>
+</header>

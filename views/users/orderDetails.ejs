@@ -1,0 +1,301 @@
+<%- include ('../layouts/userheader.ejs')%>
+<style>
+.responsive-text{
+  font-size: 2vw;
+  .step-width1 {
+  width: 20%; /* Adjust the width as needed */
+}
+
+.step-width2 {
+  width: 30%; /* Adjust the width as needed */
+}
+
+.step-width3 {
+  width: 25%; /* Adjust the width as needed */
+}
+
+.step-width4 {
+  width: 25%; /* Adjust the width as needed */
+}
+.thead-orange {
+  background-color: orange;
+  color: white; /* Optional: Set text color to contrast with the background */
+}
+}
+
+</style>
+<body>
+<!-- Start Header Area -->
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+
+ <!-- Start Banner Area -->
+ <section class="banner-area organic-breadcrumb">
+	
+		 <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			  <div class="col-first">
+					<h1>Orders</h1>
+					<nav class="d-flex align-items-center">
+						 <a href="/home">Home
+                     <span class="lnr lnr-arrow-right"></span></a>
+						 <a href="/orders">Orders</a>
+					</nav>
+			  </div>
+		  </div>
+	
+ </section>
+
+<section>
+<div class="container ">
+  
+    
+    <div class="col-md-12 mt-3">
+       <div class="card border-0 shadow ">
+         <div class="card-body text-center bg-dribbble">
+          <h1 class="order-title mt-4">Your Order Details</h1>
+          <p class="order-id">Your tracking ID is: <strong><%=orders.uniqueId%></strong></p>
+             <a href="/download?id=<%= orders._id %>" class="btn primary-btn">Generate Invoice</a>
+         </div>
+        </div>
+
+       <% if (orders && orders.products && orders.products.length > 0) { %>
+       <% orders.products.forEach((products , i) => {  %>
+       
+
+
+        <div class="card mt-4 border-2 shadow mb-3 p-3">
+  <img src="/images/products/<%= products.productId.coverPic[0] %>" class="card-img-top" alt="..." style="width: 100px;">
+  <div class="card-body">
+    <h5 class="card-title"><span class="text-danger"><%= i+1 %># </span><%=products.productId.productName%></h5>
+    <p class="card-text">Expected Delivery:<%=orders.expectedDelivery.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-')%></p>
+    <p class="card-text text-capitalize"><small class="text-muted">Payment: <span class="text-primary"><%=orders.paymentMethod%></span></small></p>
+    <p class="card-text text-capitalize">
+  <small class="text-muted">
+    Payment Status:
+    <span class="<%= products.paymentStatus === 'success' ? 'text-success' : (products.paymentStatus === 'Pending' ? 'text-warning' : 'text-danger') %>">
+      <%= products.paymentStatus %>
+    </span>
+  </small>
+</p>
+
+    <table class="table">
+  <thead class="">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Total price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"><%=products.productId.productName%></th>
+      <td>₹ <%=products.productSalePrice
+%> </td>
+      <td><%=products.quantity%></td>
+      <td>₹ <%- (products.productSalePrice) * (products.quantity) %></td>
+    </tr>
+  </tbody>
+    </table>
+
+    <div class="d-flex align-items-center justify-content-center flex-column w-100" >
+       <div class="w-100">
+    <%if (products.OrderStatus === "Returned") {%>
+    <% }else{%>
+      <h5 class="responsive-text"></h5>
+      <% if (products.OrderStatus !== "Cancelled") { %>
+        <div class="progress-track">
+  <ul id="progressbar">
+    <li class="step0 activate step-width1" id="step1">Order placed</li>
+    <li class="step0 text-center <%= products.statusLevel >= 2 ? 'activate' : '' %> step-width2" id="step2">Shipped</li>
+    <li class="step0 text-center <%= products.statusLevel >= 3 ? 'activate' : '' %> step-width3" id="step3">Out For Delivery</li>
+    <li class="step0 text-center <%= products.statusLevel >= 4 ? 'bg-success' : '' %> step-width4" id="step4">Delivered</li>
+  </ul>
+</div>
+      <% } else { %>
+        <div class="progress-track">
+          <ul id="progressbar">
+            <li class="step0 activate " id="step1">Order placed</li>
+            <li class="step0 text-center <%= products.statusLevel >= 2 ? 'activate' : '' %>" id="step2">Shipped</li>
+            <li class="step0 text-center <%= products.statusLevel >= 3 ? 'activate' : '' %>" id="step3">Out for Delivery</li>
+            <li class="step0 text-center <%= products.statusLevel >= 4 ? 'activate' : '' %>" id="step3">Delivered</li>
+            <li class="step0 bg-danger" id="step4">Order Cancelled</li>
+          </ul>
+        </div>
+      <% }%>
+    <% }%>
+  </div>
+  <div class="">
+    <% if (products.OrderStatus !== 'Returned') { %>
+      <% if (products.OrderStatus !== 'Cancelled') { %>
+        <% if (products.OrderStatus === 'Delivered' || products.OrderStatus === 'OutforDelivery') { %>
+          <button class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#return_<%= i %>">Return Product</button>
+        <% } else { %>
+          <button class="btn primary-btn responsive-text" data-bs-toggle="modal" data-bs-target="#cancel_<%= i %>">Cancel Order</button>
+        <% } %>
+      <% } else { %>
+        <h3 class="text-danger">Cancelled</h3>
+      <% } %>
+    <%}else{%>
+      <h3 class="text-danger">Returned</h1>
+    <%}%>
+    <!-- ............modal...... -->
+              <% if (products.OrderStatus === "Delivered"){%>
+                <div class="modal fade" id="return_<%= i %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content" style="margin-top: 120px;">
+                              <div class="modal-header p-5">
+                                <h5 id="exampleModalLabel">Are you sure?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body p-5">
+                                <form action="/productReturn?orderid=<%= orders._id %>&productId=<%= products.productId._id %>" method="post">
+                                  <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
+                                  <div class="mb-3">
+                                    <label for="message-text" class="col-form-label">Give reason for order returning:</label>
+                                    <textarea name="reason" class="form-control" id="message-text" placeholder="eg: Not in good condition."></textarea>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                      </div>
+                      </form>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              <%} else{%>
+               <div class="modal fade" id="cancel_<%= i %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content " style="margin-top: 120px;">
+                              <div class="modal-header p-5">
+                                <h5  id="exampleModalLabel">Are you sure?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body p-5">
+                                <form action="/orderCancel?orderid=<%= orders._id %>&productId=<%= products.productId._id %>" method="post">
+                                  <input type="hidden" value="<%= orders.totalAmount %>" name="totalPrice">
+                                  
+            
+            
+                                  <% if(orders.paymentMethod != "COD" && orders.products.OrderStatus != "pending"){ %>
+            
+                                  <div class="mb-3 ">
+                                    <label for="recipient-name" class="col-form-label">Choose Refund Option:</label>
+                                    <select class="form-select form-control" aria-label="Default select example" name="refundOption">
+                                      <option value="Wallet" class="form-control" id="recipient-name">Wallet</option>
+                                    
+                                    
+                                  </select>
+                                  </div>
+            
+                                  <% } %>
+            
+                       <div class="mb-3">
+                         <label for="message-text" class="col-form-label">Give reason for order cancelling:</label>
+                         <textarea name="reason" class="form-control" id="message-text" placeholder="eg: I changed my mind"></textarea>
+                       </div>
+                       <div class="modal-footer">
+                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                         <button type="submit" class="btn btn-primary">Yes</button>
+                       </div>
+                     </form>
+                   </div>
+                   
+                 </div>
+               </div>
+               </div>
+              <%}%>
+                
+              
+              <!-- ............modal end...... -->  
+  </div>
+ 
+</div>
+
+     
+
+
+  </div>
+</div>
+      
+       <% }) } %>        
+       
+
+
+
+
+
+      <div class="card mt-4 border-2 shadow">
+         <div class="card-body">
+          
+  <% if (orders && orders.products && orders.products.length > 0) { %>
+  <h5>Total Amount</h5>
+<% orders.products.forEach((product, i) => { %>
+  <h6>
+    <%= product.productId.productName %> * (<%= product.quantity %>) :
+    ₹ <%= (product.productSalePrice) * (product.quantity) %>
+
+    <% if (product.OrderStatus =="Cancelled") { %>
+    <span class="text-danger">(cancelled)</span>  
+    <% } %>
+  </h6>
+<% }) %>
+
+
+  
+
+  <% orders.products.forEach((product, i) => { %>
+  <h6>
+    
+  </h6>
+<% }) %>
+<%
+  let amount = orders.totalAmount;
+  orders.products.forEach((product, i) => {
+    if (product.OrderStatus === "Cancelled") {
+      amount -= (product.productSalePrice) * (product.quantity);
+%>
+      <h6>
+        <%= product.productId.productName %> * (<%= product.quantity %>) :
+        ₹ - <%= (product.productSalePrice) * (product.quantity) %> (Cancelled)
+      </h6>
+<%
+    }
+  });
+%>
+<h6>Discount: ₹<%= orders.discount ? orders.discount : 0 %></h6>
+<!-- Render the total amount -->
+<h6>Total Amount: ₹ <%= amount %></h6>
+  
+  <% } %>
+
+
+           <h5 class="mb-4">Shipping Address</h5>
+           <p><%= orders.deliveryDetails %></p>
+         </div>
+       </div>
+
+
+
+
+
+
+
+       <div class="text-center mt-4">
+         <a href="/shop" class="btn primary-btn rounded continue-btn mb-4"><i class="bi bi-house-door"></i> Continue Shopping</a>
+       </div>
+     
+ 
+   
+    </div>
+    </section>
+
+<%- include ('../layouts/userContentFooter.ejs')%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<%- include ('../layouts/userfooter.ejs')%>

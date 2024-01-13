@@ -1,0 +1,272 @@
+<%- include("../layouts/adminheader.ejs") %>
+
+
+<body>
+   <div class="container-scroller d-flex">
+     <!-- partial:./partials/_sidebar.html -->
+    <%- include("../layouts/adminSideBar.ejs") %>
+     <!-- partial -->
+     <div class="container-fluid page-body-wrapper">
+       <!-- partial:./partials/_navbar.html -->
+       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
+         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+             <span class="mdi mdi-menu"></span>
+           </button>
+           <div class="navbar-brand-wrapper p-4">
+             <!-- <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.png" alt="logo"/></a>
+             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.png" alt="logo"/></a> -->
+           </div>
+           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Manage Order <%= product.product.productName %></h4>
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item  p-2">
+              
+              <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item  p-2">
+                  <h4 class="mb-0 font-weight-bold d-none d-xl-block  text-uppercase" id="clock" style="color: #fcfcfc;"></h4>
+                </li>
+        
+              </ul>
+              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-menu"></span>
+              </button>
+            </div>
+
+            <div class="navbar-menu-wrapper navbar-search-wrapper d-none d-lg-flex align-items-center">
+              
+         
+           <ul class="navbar-nav navbar-nav-right">
+             <li class="nav-item nav-profile dropdown">
+               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                
+                 <span class="nav-profile-name">Admin</span>
+               </a>
+               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                
+                 <a class="dropdown-item" href="/admin/logout">
+                   <i class="mdi mdi-logout text-primary"></i>
+                   Logout
+                 </a>
+               </div>
+             </li>
+      
+           </ul>
+         </div>
+       </nav>
+       <!-- partial -->
+       <div class="main-panel">
+         <div class="content-wrapper">
+           
+            <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+               
+                
+              <div >
+                  <div class="table-responsive">
+                  <div class="container-fluid d-flex flex-column justify-content-center ">
+                     <h2 class="card-description">Order Details</h2><br><br>
+                      <div class="card  stretch-card ">
+                          <div class="card-header d-flex justify-content-between w-100" style="background-color: rgba(255, 187, 0, 0.788);">
+                              <div class="d-flex flex-column ">
+                                  <p class="card-title">ORDER PLACED</p>
+                                  <h6>
+                                      <%= product.orderDetails.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-') %>
+                                  </h6>
+
+                              </div>
+
+
+                          </div>
+                          <hr class="m-0 mb-1">
+                          <div>
+                              <!-- <h6 class="mx-5 mb-2">Delivery Expect on : <b>date</b></h6> -->
+                          </div>
+                          <div class="card-body row col-12 d-flex ">
+                              <div class="col-md-4 col-12 mx-auto">
+                                  <img src="/images/products/<%= product.product.coverPic[0]%>"
+                                      style="width: 250px; height: 250px; border-radius: 7px;" alt="">
+                                  <p class="card-text">
+                                  </p>
+                                  <!-- <a href="#" class="btn btn-dark">Go somewhere</a> -->
+                              </div>
+                              <div class="col-md-7 col-12">
+                                  <h4    class="card-title">
+                                      <%= product.product.productName %>
+                                  </h4>
+                                  <p class="card-text">
+                                  <p >Quantity : <b >
+                                          <%= product.orderDetails.quantity %>
+                                      </b></p><p > Payment
+                                        Method :<%= product.orderDetails. paymentMethod %> </p>
+                                      </p>
+                                      <h5 class="card-title mb-2" >
+                                         ₹ <%- (product.orderDetails.productSalePrice) * (product.orderDetails.quantity) %>        
+                                      </h5>
+                                      <hr class="  " style="background:#555555">
+                                      <h5 class="card-title" >
+                                          shipping Address
+                                      </h5>
+                                      <h6 class="card-title" >
+                                          <%= product.orderDetails.deliveryDetails %>
+                                      </h6>
+                                      
+                                      <hr class="m-0 p-0 my-3">
+                                      <% if (product.orderDetails.OrderStatus !== "Delivered") { %>
+
+                                      <% if (product.orderDetails.OrderStatus !== "Returned") { %>
+
+                                      <% if (product.orderDetails.OrderStatus !== "Cancelled") { %>
+                                        <form id="cancelOrderForm" action="/admin/adminCancelOrder" method="post">
+    <input type="hidden" name="orderId" value="<%= orderId %>">
+    <input type="hidden" name="productId" value="<%= productId %>">
+    <button type="button" class="btn btn-danger p-3" style="background-color: red;" onclick="showConfirmation()">Cancel Order</button>
+</form>
+                                      <% }else{%>
+                                        <h5 class="text-danger fw-300">Cancelled</h5>
+                                     <% } %>
+                                      <%}else{%>
+                                        <h5 class="text-danger fw-300">Returned</h5>
+                                      <%}%>
+                                     <% } else {%>
+                                        <h5 class =" fw-300" style="color: rgb(0, 227, 0);">Delivered</h5>
+                                     <% }%>
+                                      
+
+                                              <div class="col-12">
+                                                  <div class="col-12 text-light">
+
+
+                                                  </div>
+                                              </div>
+                                       
+                                  </div> 
+                              </div>
+                      </div>
+                  </div>
+                  </div>
+
+                  <%if(product.orderDetails.OrderStatus ==="Returned" || product.orderDetails.OrderStatus ==="Delivered" ){%>
+
+                 <% }else{%>            
+
+                  <%if(product.orderDetails.OrderStatus!=="Cancelled"){%>
+                      <div class="container-fluid d-flex flex-column justify-content-center ">
+
+                          <div class="card stretch-card mt-4 ">
+                            <div class="card-header d-flex justify-content-between w-100" style="background-color: rgba(255, 187, 0, 0.788);">
+                              <div class="d-flex flex-column ">
+                                  <h6>Order Actions</h6>
+                              </div>
+                          
+                            </div>
+                              <div class="card-body row col-12 d-flex ">
+                              
+
+                                
+
+
+                                  <div class="progress"  style="height: 30px; width: 100%; ">
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 1 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Order placed</div>
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 2 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Shipped</div>
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 3 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Out for Delivery</div>
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 4 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Delivered</div>
+                                  </div>
+
+
+                              
+                              </div>
+
+
+                              <div class="card-body row col-12 d-flex ">
+                              
+
+                                  <form action="/admin/orderFullDetails/changeStatus"  method="post"  >
+                                    <label class="text-center py-4">Change Order Status</label>
+                                      <select name="status" class="mb-3 form-control text-light"
+                                          style="width: 15rem; border-radius: 7px; background-color: #FFB900;" required>
+                                          <option value="" disabled selected>Select Status</option>
+                                          <option value="Shipped">Shipped</option>
+                                          <option value="OutforDelivery">Out for Delivery</option>
+                                          <option value="Delivered">Delivered</option>
+                                      </select>
+                                      <input type="text" name="orderId" value="<%= orderId%>" hidden>
+                                      <input type="text" name="productId" value="<%= productId%>" hidden>
+
+                                      <button type="submit" class="btn btn-primary" style="width: 12rem;">Update Now</button>
+                                  </form>
+
+                              </div>
+                              </div>
+                          </div>
+                      </div>
+                      <%}else{%>
+                          <div class="container-fluid d-flex flex-column justify-content-center ">
+                              <div class="card row col-12 my-3 mx-auto p-2">
+                               
+                                      <h3 class="text-center py-4 text-danger">Order cancelled</h3>
+                                      
+                                        <div class="progress"  style="height: 30px; width: 100%; ">
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 1 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Order placed</div>
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 2 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Shipped</div>
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 3 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Out for Delivery</div>
+                                          <div class="progress-bar <%= product.orderDetails.StatusLevel >= 4 ? 'bg-success' : '' %>" role="progressbar" style="width: 25%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Delivered</div>
+                                          <div class="progress-bar bg-danger role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Order cancelled</div>
+                                  </div>
+                                          
+                                      
+                                  
+                              </div>
+                          </div>
+                          <%}%>
+                 <%}%>
+
+
+
+
+              </div>
+            
+            
+                
+                
+              
+                
+              </div>
+            </div>
+            </div>
+             
+         </div>
+           
+      
+         
+         <!-- partial -->
+       </div>
+       <!-- main-panel ends -->
+     </div>
+     <!-- page-body-wrapper ends -->
+   </div>
+   <!-- container-scroller -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
+<script>
+    function showConfirmation() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to cancel this order.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user clicks "Yes", submit the form
+                document.getElementById('cancelOrderForm').submit();
+            }
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<%- include("../layouts/adminfooter.ejs") %>

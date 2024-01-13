@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+
+<title>Invoice - Bootdey.com</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<style type="text/css">
+    	body{
+background:#eee;
+margin-top:0px;
+}
+.text-danger strong {
+        	color: #9f181c;
+		}
+		.receipt-main {
+			background: #ffffff none repeat scroll 0 0;
+			border-bottom: 12px solid #333333;
+			border-top: 12px solid #9f181c;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			padding: 40px 30px !important;
+			position: relative;
+			box-shadow: 0 1px 21px #acacac;
+			color: #333333;
+			font-family: open sans;
+		}
+		.receipt-main p {
+			color: #333333;
+			font-family: open sans;
+			line-height: 1.42857;
+		}
+		.receipt-footer h1 {
+			font-size: 15px;
+			font-weight: 400 !important;
+			margin: 0 !important;
+		}
+		.receipt-main::after {
+			background: #414143 none repeat scroll 0 0;
+			content: "";
+			height: 5px;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: -13px;
+		}
+		.receipt-main thead {
+			background: #414143 none repeat scroll 0 0;
+		}
+		.receipt-main thead th {
+			color:#fff;
+		}
+		.receipt-right h5 {
+			font-size: 16px;
+			font-weight: bold;
+			margin: 0 0 7px 0;
+		}
+		.receipt-right p {
+			font-size: 12px;
+			margin: 0px;
+		}
+		.receipt-right p i {
+			text-align: center;
+			width: 18px;
+		}
+		.receipt-main td {
+			padding: 9px 20px !important;
+		}
+		.receipt-main th {
+			padding: 13px 20px !important;
+		}
+		.receipt-main td {
+			font-size: 13px;
+			font-weight: initial !important;
+		}
+		.receipt-main td p:last-child {
+			margin: 0;
+			padding: 0;
+		}	
+		.receipt-main td h2 {
+			font-size: 20px;
+			font-weight: 900;
+			margin: 0;
+			text-transform: uppercase;
+		}
+		.receipt-header-mid .receipt-left h1 {
+			font-weight: 100;
+			margin: 34px 0 0;
+			text-align: right;
+			text-transform: uppercase;
+		}
+		.receipt-header-mid {
+			margin: 24px 0;
+			overflow: hidden;
+		}
+		
+		#container {
+			background-color: #dcdcdc;
+		}
+    </style>
+</head>
+<body>
+<div class="col-md-12">
+<div class="row">
+<div class="receipt-main  ">
+<div class="row">
+<div class="receipt-header">
+
+<div class=" text-right">
+<div class="receipt-right">
+<img class="img-responsive" alt="rc hub" src="/user/img/logo.png" >
+<h5>Rc Hub.</h5>
+<p>+1 3649-6589 <i class="fa fa-phone"></i></p>
+<p>RcHub.com <i class="fa fa-envelope-o"></i></p>
+<p>USA <i class="fa fa-location-arrow"></i></p>
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="receipt-header receipt-header-mid">
+<div class="">
+<div class="receipt-right">
+<h5 class="text-capitalize"><%=user.name%></h5>
+<p><b>Mobile :</b><%=user.mobile%></p>
+<p><b>Email :</b> <%=user.email%></p>
+<p><b>Address :</b> <%= orders.deliveryDetails %></p>
+</div>
+</div>
+<div class="">
+<div>
+<h3>INVOICE # <%=orders.uniqueId%></h3>
+</div>
+</div>
+</div>
+</div>
+<div>
+	 <% if (orders && orders.products && orders.products.length > 0) { %>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Si .No</th>
+        <th>Product</th>
+        <th>quantity</th>
+        <th>price</th>
+        <th>Total Amount</th>
+        <th>Payment Method</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.products.forEach((product, i) => { %>
+        <tr>
+          <td class=""><%= i %></td>
+          <td class="">
+            <img src="/images/products/<%= product.productId.coverPic[0] %>" alt="..." style="width: 70px;">
+            <%= product.productId.productName %>
+          </td>
+          <td class=""><%= product.quantity %></td>
+          <td class="">₹ <%= product.productSalePrice %></td>
+          <td class=""> ₹ <%= product.productSalePrice * product.quantity %></td>
+          <td class=""><%= orders.paymentMethod %></td>
+          <td class="">
+            <i class="fa fa-inr"></i><span class="<%= product.paymentStatus === 'success' ? 'text-success' : (product.paymentStatus === 'Pending' ? 'text-warning' : 'text-danger') %>">
+              <%= product.paymentStatus %>
+            </span>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<div class="">    
+<% if (orders && orders.products && orders.products.length > 0) { %><h2>Total Amount</h2>
+<% orders.products.forEach((product, i) => { %>
+<h6>
+<%= product.productId.productName %> * (<%= product.quantity %>) :
+₹ <%= (product.productSalePrice) * (product.quantity) %>
+<% if (product.OrderStatus =="Cancelled") { %>
+<span class="text-danger">(cancelled)</span>  
+<% } %>
+</h6>
+<% }) %>
+<% orders.products.forEach((product, i) => { %>
+<h6>
+</h6>
+<% }) %>
+<%let amount = orders.totalAmount;orders.products.forEach((product, i) => {
+if (product.OrderStatus === "Cancelled") { amount -= (product.productSalePrice) * (product.quantity);%>
+<h6><%= product.productId.productName %> * (<%= product.quantity %>) :₹ - <%= (product.productSalePrice) * (product.quantity) %> (Cancelled)</h6>
+<%} });%>
+<h6>Discount: ₹<%= orders.discount ? orders.discount : 0 %></h6>
+<h3>Total Amount: ₹ <%= amount %></h3>
+<% } %>     
+<% } %>
+</div>
+
+</div>
+<div class="row">
+<div class="receipt-header receipt-header-mid receipt-footer">
+<div class="col-xs-8 col-sm-8 col-md-8 text-left">
+<div class="receipt-right">
+<p><b>Date :</b> <%= new Date().toLocaleDateString() %></p>
+<h5 style="color: rgb(140, 140, 140);">Thanks for shopping.!</h5>
+</div>
+</div>
+<div class="col-xs-4 col-sm-4 col-md-4">
+<div class="receipt-left">
+<h1>Stamp</h1>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+	window.onload = function () {
+
+                const element = document.body; // You can specify any HTML element here
+
+                html2pdf(element);
+
+                setTimeout(function () {
+                    window.history.back();
+                }, 1600);
+            };</script>
+</body>
+</html>

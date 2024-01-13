@@ -1,0 +1,147 @@
+<%- include("../layouts/userheader.ejs") %>
+<!-- Start Header Area -->
+<%- include ('../layouts/userSideBar.ejs')%>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb ">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Login/Register</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Login/Register</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Banner Area -->
+
+<!--================Login Box Area =================-->
+<div class="login">
+<section class="login_box_area section_gap">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login_box_img">
+                    <img class="img-fluid" src="/user/img/login.jpg" alt="">
+                    <div class="hover">
+                        <h4>New to our website?</h4>
+                        <p>Explore the World of RC with us</p>
+                        <a class="primary-btn" href="/register">Create an Account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login_form_inner">
+                    <h3>Log in to enter</h3>
+                    <form class="row login_form" action="/login" method="post"  >
+                        <div class="col-md-12 form-group">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="User Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'User Email'" required>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+
+                        </div>
+                        
+                        <div class="col-md-12 form-group">
+                            <% if(typeof message !== 'undefined') { %>
+                                <p style="color: red;"><%= message %></p>  
+                            <% } %>
+                            <button type="submit" class="primary-btn">Log In</button>
+                            <a href="/forget">Forgot Password?</a>
+                            <a href="/verification">not verified?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+<div class="register" style="display: none;"">
+<section class="login_box_area section_gap ">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" src="/user/img/register.jpg" alt="">
+						<div class="hover">
+							<h4>Already A User ?</h4>
+							<p>Resume the journey where you stopped</p>
+							<a class="primary-btn" href="/">Login</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Register to RC HUB</h3>
+						<form class="row login_form" action="" method="post" enctype="multipart/form-data" id="contactForm" >
+							<% if (typeof emailMessage !== 'undefined') { %>
+								<p class="text-center text-danger email-message"><%= emailMessage %></p>
+							 <% } %>
+							
+							<div class="col-md-12 form-group">
+								 <input type="text" class="form-control" name="name" placeholder="Username" onblur="validateName()" required>
+								 <div id="nameError" class="error-message text-danger"></div>
+							</div>
+							<div class="col-md-12 form-group">
+								 <input type="email" class="form-control" name="email" placeholder="Email" onblur="validateEmail()" required>
+								 <div id="emailError" class="error-message text-danger"></div>
+							</div>
+							<div class="col-md-12 form-group">
+								 <input type="tel" class="form-control" name="mno" placeholder="Mobile Number" onblur="validateMobile()" >
+								 <div id="mnoError" class="error-message text-danger"></div>
+							</div>
+							<div class="col-md-12 form-group">
+								 <input type="file" class="form-control"  name="image" required>
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" name="password" placeholder="Password" 
+								onblur="validatePassword()" 
+								required>
+								<div id="passwordError" class="error-message text-danger"></div>
+						  </div>
+						  <div class="col-md-12 form-group">
+							<input type="password" class="form-control" name="verify_password" placeholder="Verify Password" onblur="validatePasswordConfirmation(); checkFormValidity()" required>
+							<div id="passwordMatchError" class="error-message text-danger"></div>
+						  </div>
+						  <div class="col-md-12 form-group">
+							
+							<button type="submit" class="primary-btn" id="submitButton" disabled>Sign Up</button>
+
+							<br>
+							<br>
+							<div class="col-md-12 form-group">
+								
+								 
+								 <% if (typeof message !== 'undefined') { %>
+									<p class="text-center text-danger general-message"><%= message %><span class="text-danger"><a href="https://mail.google.com/mail/" target="_blank">Goto Gmail !</a></span><br><br></p>
+								 <% } %>
+								 <!-- <button type="submit" class="primary-btn">Log In</button> -->
+								 <!-- <div class="col-md-12 form-group">
+									<button type="submit" class="primary-btn" id="submitButton" disabled>Log In</button>
+							  </div> -->
+								 <a href="/forget">Forgot Password?</a>
+								 <a href="/verification">not verified?</a>
+							</div>
+					  </form>
+					  
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+</div>
+<!--================End Login Box Area =================-->
+
+<!-- start footer Area -->
+<%- include ('../layouts/userContentFooter.ejs')%>
+<!-- End footer Area -->
+
+
+<%- include('../layouts/userfooter.ejs') %>
