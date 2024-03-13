@@ -8,6 +8,7 @@ const { ObjectId } = require("mongoose").Types;
 const addToCart = async (req, res) => {
   try {
     if (req.session.user_id) {
+      
       const productId = req.body.id;
       const name = req.session.user_id;
       const userData = await userDb.findOne({ _id: name });

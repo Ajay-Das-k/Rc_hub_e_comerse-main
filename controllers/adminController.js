@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 const randomstring = require("randomstring");
 const config = require("../config/config");
 const nodemailer = require("nodemailer");
-
+const baseUrl = process.env.BASEURL;
 const securePassword = async (password) => {
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -37,7 +37,9 @@ const sendResetPasswordMail = async (name, email, token) => {
       html:
         "<p>Hii " +
         name +
-        ', please click here to <a href="https://rc-hub-ecomerse.onrender.com/admin/forget-password?token=' +
+        ', please click here to <a href="' +
+        baseUrl +
+        "/admin/forget-password?token=" +
         token +
         '"> Reset </a> your password.</p>',
     };
@@ -65,21 +67,23 @@ const addUserMail = async (name, email, password, user_id) => {
         pass: config.emailPassword,
       },
     });
-    const mailOptions = {
-      from: config.emailUser,
-      to: email,
-      subject: "Admin add you and Verify your mail",
-      html:
-        "<p>Hii " +
-        name +
-        ', please click here to <a href="https://rc-hub-ecomerse.onrender.com/verify?id=' +
-        user_id +
-        '"> Verify </a> your mail.</p> <br><br> <b>Email:-</b>' +
-        email +
-        "<br><b>Password:-</b>" +
-        password +
-        "",
-    };
+   const mailOptions = {
+     from: config.emailUser,
+     to: email,
+     subject: "Admin add you and Verify your mail",
+     html:
+       "<p>Hii " +
+       name +
+       ', please click here to <a href="' +
+       baseUrl +
+       "/verify?id=" +
+       user_id +
+       '"> Verify </a> your mail.</p> <br><br> <b>Email:-</b>' +
+       email +
+       "<br><b>Password:-</b>" +
+       password +
+       "",
+   };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);

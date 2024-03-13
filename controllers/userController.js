@@ -17,6 +17,7 @@ var instance = new Razorpay({
   key_id: process.env.KEY_ID,
   key_secret: process.env.KEY_SECRET,
 });
+const baseUrl= process.env.BASEURL
 
 // ==============================================================SECURING THE PASSWORD================================================================
 const securePassword = async (password) => {
@@ -46,9 +47,7 @@ const sendVerifyMail = async (name, email, user_id) => {
       to: email,
       subject: "For Verification mail",
       html:
-        "<p>Hii" +
-        name +
-        ', please click here to <a href="https://rc-hub-ecomerse.onrender.com/verify?id=' +user_id +'"> Verify </a> your mail.</p>',
+        "<p>Hii"+name +', please click here to <a href="'+baseUrl+"/verify?id="+user_id+'"> Verify </a> your mail.</p>',
     };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -65,6 +64,7 @@ const sendVerifyMail = async (name, email, user_id) => {
 //for reset password send mail
 const sendResetPasswordMail = async (name, email, token) => {
   try {
+    console.log(baseUrl,"[][][][][][][][][][][][][][][][][");
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -80,11 +80,7 @@ const sendResetPasswordMail = async (name, email, token) => {
       to: email,
       subject: "For Reset Password",
       html:
-        "<p>Hii " +
-        name +
-        ', please click here to <a href="https://rc-hub-ecomerse.onrender.com/forget-password?token=' +
-        token +
-        '"> Reset </a> your password.</p>',
+        "<p>Hii " +name +', please click here to <a href="' +baseUrl +"/forget-password?token=" +token +'"> Reset </a> your password.</p>',
     };
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -454,6 +450,10 @@ const verificationLoad = async (req, res) => {
 
 const sentVerificationLink = async (req, res) => {
   try {
+     const categoryData = await Category.find().populate("offer").exec();
+     const cart = await Cart.findOne({ user: req.session.user_id })
+       .populate("products.productId")
+       .exec();
     const email = req.body.email;
     const userData = await User.findOne({ email: email });
     if (userData) {
